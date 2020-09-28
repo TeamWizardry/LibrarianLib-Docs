@@ -2,7 +2,9 @@
 
 Courier is LibrarianLib's network library. Courier is designed to solve some usability problems with 
 Forge packets, specifically the fact that serialization can be a pain and the Forge API encourages
-chucking all your packet implementations into one [god method](https://en.wikipedia.org/wiki/God_object).
+chucking all your packet implementations into one [god method][god_object].
+
+[god_object]: https://en.wikipedia.org/wiki/God_object
 
 Networking in Minecraft is done using “packets”, and those packets are sent on “channels.” A 
 channel is like a radio channel, and packets are like the audio signal being sent on that channel.

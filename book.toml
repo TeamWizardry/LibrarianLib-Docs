@@ -7,3 +7,4 @@ title = "LibrarianLib"
 
 [output.html.playground.boring-prefixes]
 java = "~"
+kotlin = "~"

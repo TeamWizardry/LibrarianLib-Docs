@@ -1,6 +1,7 @@
 # Summary
 
 - [LibrarianLib](./librarianlib.md)
+  - [Reading Kotlin cheat sheet](./reading_kotlin.md)
 
 # Foundation
 
@@ -53,7 +54,10 @@
   - [Modules]()
 - [Albedo]()
 - [Courier](./courier/README.md)
-- [Etcetera]()
+- [Etcetera](./etcetera/README.md)
+  - [Event Bus](./etcetera/event_bus.md)
+  - [Raycasting]()
+  - [Stencil mask]()
 - [Mirage]()
 - [Mosaic]()
   - [Sprites]()
