@@ -6,7 +6,7 @@ block, just hand it to LibLib, and we’ll take care of it for you.
 
 LibrarianLib is fundamentally a Java library. The library itself may be written in Kotlin, but it
 has been built with the focus on being clean and easy to use from Java code. If you encounter any
-[rough APIs][#rough-apis], please join [our Discord server][discord] and let me know. I do my
+[rough APIs](#rough-apis), please join [our Discord server][discord] and let me know. I do my
 best to present a clean API, but some stuff inevitably slips through the cracks.
 
 [main_issues]: https://github.com/TeamWizardry/LibrarianLib/issues

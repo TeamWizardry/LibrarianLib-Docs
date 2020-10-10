@@ -5,7 +5,7 @@ Etcetera provides a basic event bus with a reflection-based hooking system a la
 
 First, some terminology. **Events** are fired on an **event bus**. Other code can then **hook**
 into that event type on that bus. Events can then be **fired** on that event bus and the bus will
-run all of the hooks registered for that event type, passing the event object to each one in
+run all the hooks registered for that event type, passing the event object to each one in
 succession.
 
 ## Event Bus
@@ -15,7 +15,7 @@ Creating an event bus just requires creating an `EventBus` object.
 ```java
 ~import com.teamwizardry.librarianlib.etcetera.eventbus.EventBus;
 ~
-~public class ExampleBus {
+~public class ThingWithEvents {
     public final EventBus BUS = new EventBus();
 ~}
 ```
@@ -33,8 +33,8 @@ object will then be read after firing it.
 
 ### Simple events
 
-Simple events are, well, simple. However, they have a few tricks up their sleeve. The only thing
-you need to do to create your own event is subclass `Event`.
+Simple events are, well, simple. The only thing you need to do to create your own event is
+subclass `Event`.
 
 ```java
 ~import com.teamwizardry.librarianlib.etcetera.eventbus.Event;
@@ -69,7 +69,8 @@ public class ExampleCancelableEvent extends CancelableEvent {
 ## Hooks
 
 Hooks into events can be made one of two ways. Either by manually calling the `hook` method on
-the bus or by annotating a method with `@Hook` and calling the `register` method on the bus.
+the bus or by annotating a method with `@Hook` and passing an instance to the `register` method on 
+the bus. Note that there's no way to use `@Hook` on static methods.
 
 These two blocks are functionally equivalent:
 
@@ -103,13 +104,14 @@ These two blocks are functionally equivalent:
 ### Hook options
 
 Similarly to Forge event hooks, Etcetera event hooks can have a priority and can request to still 
-recieve canceled events. The priority and `receiveCanceled` flag can be passed to the `hook` method
+receive canceled events. The priority and `receiveCanceled` flag can be passed to the `hook` method
 or in the `@Hook` annotation, as the case may be. The priority is useful for canceling events, since
-you can request for your event to run before others.
+you can request for your event to run before others. The priorities are, in the order they're run, 
+`FIRST`, `EARLY`, `DEFAULT`, `LATE`, `LAST`.
 
 ### Per-hook state 
 
-Each individual event hook can hold some state, and your event can act on that by overriding the
+Individual event hooks can hold some state, and your event can act on that by overriding the
 `storePerHookState` and `loadPerHookState` methods. Whatever value was returned from
 `storePerHookState` is passed to `loadPerHookState` the next time *that hook* is called, meaning
 each individual hook can have independent state.
