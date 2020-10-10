@@ -57,7 +57,6 @@
 - [Etcetera](./etcetera/README.md)
   - [Event Bus](./etcetera/event_bus.md)
   - [Raycasting](./etcetera/raycasting.md)
-  - [Stencil mask](./etcetera/stencil_mask.md)
 - [Mirage]()
 - [Mosaic]()
   - [Sprites]()
