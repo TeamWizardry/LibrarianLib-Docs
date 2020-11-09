@@ -15,10 +15,14 @@
 
 # Facade
 
-- [Facade]()
-- [Layers]()
-  - [What is a Layer]()
-  - [Transforms]()
+- [Facade](./facade/README.md)
+- [Getting started](./facade/getting_started/README.md)
+  - [Hello, Square!](./facade/getting_started/hello_square.md)
+  - [All the Squares](./facade/getting_started/all_the_squares.md)
+  - [Squares All the Way Down](./facade/getting_started/squares_all_the_way_down.md)
+- [Creating a Guessing Game](./facade/guessing_game.md)
+- [Layers](./facade/layers/README.md)
+  - [Transforms](./facade/layers/transforms.md)
   - [Events]()
   - [IMValue/RMValue]()
   - [Self-layout]()
