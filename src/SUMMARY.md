@@ -5,11 +5,11 @@
 
 # Foundation
 
-- [Foundation]()
-- [Mod Setup]()
-- [Registration]()
+- [Foundation](./foundation/README.md)
+- [BaseMod](./foundation/basemod.md)
+- [Registration Manager](./foundation/registration_manager/README.md)
+  - [Blocks](./foundation/registration_manager/blocks.md)
   - [Items]()
-  - [Blocks]()
   - [Tile Entities]()
   - [Entities]()
 

@@ -8,6 +8,6 @@ title = "LibrarianLib"
 [output.html]
 curly-quotes = true
 
-[output.html.playground.boring-prefixes]
+[output.html.playground.line-hiding-prefixes]
 java = "~"
 kotlin = "~"
