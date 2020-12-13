@@ -72,6 +72,22 @@ I won't prescribe much organization, but I would recommend you have a set of cla
 specific types of object. The mod class would then call methods on these classes and pass them the
 mod's Registration Manager.
 
-You should also add everything to the Registration Manager in your mod's constructor, or in
-something called during your mod's constructor. This is to ensure everything is set up before any
-of important events that the Registration Manager uses.
+```java
+~import com.teamwizardry.librarianlib.foundation.registration.BlockSpec;
+~import com.teamwizardry.librarianlib.foundation.registration.LazyBlock;
+~import com.teamwizardry.librarianlib.foundation.registration.RegistrationManager;
+~
+public class ModBlocks {
+    public static final LazyBlock awesomeBricks = new LazyBlock();
+
+    public static void register(RegistrationManager registrationManager) {
+        awesomeBricks.from(registrationManager.add(
+                new BlockSpec("awesome_bricks")
+                        // ...spec configuration
+        ));
+    }
+}
+```
+
+You should also add everything to the Registration Manager during your mod's constructor. This is 
+to ensure everything is set up before any of important events that the Registration Manager uses.

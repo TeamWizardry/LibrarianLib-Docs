@@ -8,10 +8,13 @@
 - [Foundation](./foundation/README.md)
 - [BaseMod](./foundation/basemod.md)
 - [Registration Manager](./foundation/registration_manager/README.md)
+  - [Items](./foundation/registration_manager/items.md)
   - [Blocks](./foundation/registration_manager/blocks.md)
-  - [Items]()
-  - [Tile Entities]()
+  - [Base Blocks]()
+  - [Block Collections]()
+  - [Tile Entities](./foundation/registration_manager/tile_entities.md)
   - [Entities]()
+  - [Capabilities]()
 
 # Facade
 
