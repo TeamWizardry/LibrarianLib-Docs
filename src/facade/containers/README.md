@@ -7,7 +7,7 @@ accessing an inventory, configuring a block or item, or anything in between.
 
 Facade containers must have a single constructor. That constructor's parameters must 
 begin with `int windowId, PlayerEntity player`, followed by any number of 
-[Prism](/prism)-serializable parameters. This constructor should not be called 
+[Prism](../../prism)-serializable parameters. This constructor should not be called 
 directly, only indirectly via the `FacadeContainerType`'s `open` method.
 
 ## Opening containers
@@ -36,7 +36,7 @@ the arguments to pass to it. The arguments will be serialized into a packet, sen
 the network, and then the `@Message` method will be called.
 
 ***NOTE!*** These messages are still packets, so it's vital you take the 
-[same precautions](/courier#trust) as you would with any client-to-server 
+[same precautions](../../courier#trust) as you would with any client-to-server 
 communication.
 
 ```java

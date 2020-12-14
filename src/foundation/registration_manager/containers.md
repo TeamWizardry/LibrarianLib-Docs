@@ -1,7 +1,7 @@
 # Containers
 
 Note that the Registration Manager only natively supports 
-[Facade containers](/facade/containers). See that page for documentation on creating
+[Facade containers](../../facade/containers). See that page for documentation on creating
 the containers themselves. This page is dedicated to documenting the registration
 process using Foundation.
 

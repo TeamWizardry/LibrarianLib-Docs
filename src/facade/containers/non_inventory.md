@@ -1,4 +1,4 @@
-# Non-Inventory Containers
+# Non-Inventory Container
 
 In this example I'll be creating an item that allows you to set blocks adjacent to where
 you clicked to dirt:

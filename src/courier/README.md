@@ -22,7 +22,7 @@ public static final CourierChannel channel = new CourierChannel(
 );
 ```
 
-If you're using [Foundation](/foundation), you already have a channel: `modInstance.getCourier()`.
+If you're using [Foundation](../foundation), you already have a channel: `modInstance.getCourier()`.
 
 ## Packets 
 
