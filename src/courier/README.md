@@ -22,6 +22,8 @@ public static final CourierChannel channel = new CourierChannel(
 );
 ```
 
+If you're using [Foundation](/foundation), you already have a channel: `modInstance.getCourier()`.
+
 ## Packets 
 
 Networking is hard, so there are a couple of things you need to keep in mind when using packets. 
