@@ -24,12 +24,16 @@ public static final CourierChannel channel = new CourierChannel(
 
 ## Packets 
 
-Networking is hard, so there are a few things you need to keep in mind when using packets. 
+Networking is hard, so there are a couple of things you need to keep in mind when using packets. 
+
+### Threads
 
 First, packets are handled on a separate network thread. This means you can *not* interact with most
 of the game directly in your packet handler. If you want to interact with the game you need to put
 all that interaction inside a `context.enqueueWork(() -> {})`, which will call the given `Runnable`
 on the main thread at the next opportunity.
+
+### Trust
 
 Second, **NEVER EVER EVER** trust the client. Always assume the player is using a hacked client, and
 program accordingly. Validate everything. If possible, compute things server-side instead of sending

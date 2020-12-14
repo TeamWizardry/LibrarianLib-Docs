@@ -13,6 +13,7 @@
   - [Base Blocks]()
   - [Block Collections]()
   - [Tile Entities](./foundation/registration_manager/tile_entities.md)
+  - [Containers](./foundation/registration_manager/containers.md)
   - [Entities]()
   - [Capabilities]()
 
@@ -47,7 +48,8 @@
   - [Tooltips]()
   - [Yoga Layout]()
 
-- [Containers]()
+- [Containers](facade/containers/README.md)
+  - [Non-Inventory Containers](facade/containers/non_inventory.md)
   - [Woo boy…]()
 
 # Other modules
