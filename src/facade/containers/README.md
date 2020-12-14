@@ -64,8 +64,8 @@ public class CoolContainerScreen extends ... {
 
 ## Container registration
 
-If you're using [Foundation](/foundation), the registration manager can [register 
-containers for you](/foundation/registration_manager/containers). If you aren't using
+If you're using [Foundation](../../foundation), the registration manager can [register 
+containers for you](../../foundation/registration_manager/containers). If you aren't using
 Foundation, registering containers is relatively simple.
 
 The first thing you'll need to do is create the `FacadeContainerType` and put it 
