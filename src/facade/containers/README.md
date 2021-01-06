@@ -41,26 +41,39 @@ communication.
 
 ```java
 public class CoolContainer extends FacadeContainer {
-    // in the container
     @Message
-    private void doThing(String thing, int value) {
-        // do something on the server
-        this.sendMessage("serverToldMe", thing + " done");
+    private void doThingClicked(String thing, int value) {
+        if(!this.isClientContainer()) {
+            // do something on the server, then send a message to the client container
+            this.sendClientMessage("thingDone");
+        }
     }
 
     @Message
-    private void serverToldMe(String data) {
-        // do something on the client, maybe update a field in a "value changed" message
-        // this.sendMessage("doThing", ...); // we can send messages to the server too
+    private void thingDone() {
     }
 }
 
-public class CoolContainerScreen extends ... {
+public class CoolContainerScreen extends FacadeContainerScreen<CoolContainer> {
     private void doThingButtonClicked() {
-        this.container.sendMessage("doThing", "wow", 42);
+        // send a message to the container (both on the client and the server)
+        this.sendMessage("doThingClicked", "wow", 42);
     }
 }
 ```
+
+Ideally the client and server containers should move in lockstep, with the same thing 
+happening exactly the same way on both sides. Messages can help facilitate that by 
+calling the same code on both sides.
+
+Messages from the GUI to the container should generally describe what the user *did*,
+not what the container *should do*. The container is the 
+[only part you can trust](../../courier#trust), so all the business decisions, 
+including what action to take based on user input, should happen there. This is not to 
+say you need to handle every button press in the container, just that your GUI should 
+send a `clickedItem(String id)` message instead of an `openPage(String id)` message. 
+These may very well be behave identically in this case, but just changing the way you 
+name your messages can help you get in the right mindset.
 
 ## Container registration
 
@@ -126,5 +139,3 @@ public class ExampleMod {
     }
 }
 ```
-
-

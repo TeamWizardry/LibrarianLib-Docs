@@ -33,10 +33,10 @@ The registration manager currently supports:
 - Entities
 - Tile Entities
 - Capabilities
+- GUI containers
 
 In the future I hope to add support for:
 - Fluids
-- GUI containers
 - Sounds? (this is very much a maybe)
 
 ### Lazies

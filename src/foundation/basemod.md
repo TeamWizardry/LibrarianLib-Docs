@@ -42,7 +42,7 @@ provides pre-built methods designed to be overridden by subclasses.
 - `registerTileEntities`**†**
 - `registerEntities`**†**
 - `registerFluids`**‡**
-- `registerContainers`**‡**
+- `registerContainers`**†**
 - `registerSounds`**‡**
 
 **†** If you can, prefer using the [Registration Manager](./registration_manager/README.md) instead 
