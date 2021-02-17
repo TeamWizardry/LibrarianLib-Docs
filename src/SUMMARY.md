@@ -50,7 +50,7 @@
 
 - [Containers](./facade/containers/README.md)
   - [Non-Inventory Container](./facade/containers/non_inventory.md)
-  - [Woo boy…]()
+  - [Inventories](./facade/containers/inventories.md)
 
 # Other modules
 

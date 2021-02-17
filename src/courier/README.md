@@ -59,13 +59,11 @@ if more manual.
 
 ```java
 ~import com.teamwizardry.librarianlib.core.util.Client;
-~import com.teamwizardry.librarianlib.core.util.sided.SidedSupplier;
+~import com.teamwizardry.librarianlib.courier.CourierBuffer;
 ~import com.teamwizardry.librarianlib.courier.PacketType;
 ~import net.minecraft.block.Block;
 ~import net.minecraft.entity.player.PlayerEntity;
-~import net.minecraft.network.PacketBuffer;
 ~import net.minecraft.util.math.BlockPos;
-~import net.minecraftforge.fml.network.NetworkDirection;
 ~import net.minecraftforge.fml.network.NetworkEvent;
 ~import org.jetbrains.annotations.NotNull;
 ~
@@ -88,13 +86,13 @@ public class YourPacketType extends PacketType<YourPacketType.Packet> {
     }
 
     @Override
-    public void encode(Packet packet, @NotNull PacketBuffer buffer) {
+    public void encode(Packet packet, @NotNull CourierBuffer buffer) {
         buffer.writeBlockPos(packet.pos);
         buffer.writeRegistryId(packet.block);
     }
 
     @Override
-    public Packet decode(@NotNull PacketBuffer buffer) {
+    public Packet decode(@NotNull CourierBuffer buffer) {
         BlockPos pos = buffer.readBlockPos();
         Block block = buffer.readRegistryIdSafe(Block.class);
         return new Packet(pos, block);
@@ -102,25 +100,24 @@ public class YourPacketType extends PacketType<YourPacketType.Packet> {
 
     @Override
     public void handle(Packet packet, @NotNull Supplier<NetworkEvent.Context> context) {
-        PlayerEntity player;
-        if (context.get().getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-            // we can use client-only code in this block
-            player = SidedSupplier.client(() -> Client.getPlayer());
-        } else {
-            player = context.get().getSender();
-        }
+        // check what side we're running on
+        if(context.get().getDirection().getReceptionSide().isServer()) {
+            // run this on the main thread
+            context.get().enqueueWork(() -> {
+                // on the client you would do `player = Client.getPlayer()`
+                PlayerEntity player = context.get().getSender();
 
-        // run
-        context.get().enqueueWork(() -> {
-            // **NEVER** trust the client. If we don't do this it would allow a 
-            // hacked client to generate and load arbitrary chunks.
-            if (!player.world.isBlockLoaded(packet.pos)) {
-                return;
-            }
-            if (player.world.getBlockState(packet.pos).getBlock() != packet.block) {
-                // do something
-            }
-        });
+                // **NEVER** trust the client. If we don't do this
+                // it would allow a hacked client to generate and load
+                // arbitrary chunks.
+                if (!player.world.isBlockLoaded(packet.pos)) {
+                    return;
+                }
+                if (player.world.getBlockState(packet.pos).getBlock() != packet.block) {
+                    // do something
+                }
+            });
+        }
     }
 }
 ```
@@ -136,16 +133,14 @@ take advantage of this you need to implement `CourierPacket` and [make it serial
 
 ```java
 ~import com.teamwizardry.librarianlib.core.util.Client;
-~import com.teamwizardry.librarianlib.core.util.sided.SidedSupplier;
+~import com.teamwizardry.librarianlib.courier.CourierBuffer;
 ~import com.teamwizardry.librarianlib.courier.CourierPacket;
 ~import dev.thecodewarrior.prism.annotation.Refract;
 ~import dev.thecodewarrior.prism.annotation.RefractClass;
 ~import dev.thecodewarrior.prism.annotation.RefractConstructor;
 ~import net.minecraft.block.Block;
 ~import net.minecraft.entity.player.PlayerEntity;
-~import net.minecraft.network.PacketBuffer;
 ~import net.minecraft.util.math.BlockPos;
-~import net.minecraftforge.fml.network.NetworkDirection;
 ~import net.minecraftforge.fml.network.NetworkEvent;
 ~import org.jetbrains.annotations.NotNull;
 ~
@@ -165,37 +160,35 @@ public class YourCourierPacket implements CourierPacket {
 
     // optionally write anything not supported by Prism.
     @Override
-    public void writeBytes(@NotNull PacketBuffer buffer) {
+    public void writeBytes(@NotNull CourierBuffer buffer) {
     }
 
     // optionally read anything not supported by Prism.
     // you'll need to use a non-final field and initialize it in this method.
     @Override
-    public void readBytes(@NotNull PacketBuffer buffer) {
+    public void readBytes(@NotNull CourierBuffer buffer) {
     }
 
     @Override
     public void handle(@NotNull NetworkEvent.Context context) {
-        PlayerEntity player;
-        if (context.getDirection() == NetworkDirection.PLAY_TO_CLIENT) {
-            // we can use client-only code in this block
-            player = SidedSupplier.client(() -> Client.getPlayer());
-        } else {
-            player = context.getSender();
-        }
+        // check what side we're running on
+        if(context.getDirection().getReceptionSide().isServer()) {
+            // run this on the main thread
+            context.enqueueWork(() -> {
+                // on the client you would do `player = Client.getPlayer()`
+                PlayerEntity player = context.getSender();
 
-        // run
-        context.enqueueWork(() -> {
-            // **NEVER** trust the client. If we don't do this
-            // it would allow a hacked client to generate and load
-            // arbitrary chunks.
-            if (!player.world.isBlockLoaded(this.pos)) {
-                return;
-            }
-            if (player.world.getBlockState(this.pos).getBlock() != this.block) {
-                // do something
-            }
-        });
+                // **NEVER** trust the client. If we don't do this
+                // it would allow a hacked client to generate and load
+                // arbitrary chunks.
+                if (!player.world.isBlockLoaded(this.pos)) {
+                    return;
+                }
+                if (player.world.getBlockState(this.pos).getBlock() != this.block) {
+                    // do something
+                }
+            });
+        }
     }
 }
 ```
