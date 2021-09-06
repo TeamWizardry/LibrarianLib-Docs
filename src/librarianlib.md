@@ -1,5 +1,12 @@
 # LibrarianLib
 
+***NOTE:*** These docs were written for the Forge 1.12 release. Some sections are no longer relevant or
+have changed. In particular, Courier was lightly coupled with Forge's networking, so the 
+registration process is different (though much of it has remained the same). Foundation was also 
+deeply coupled with Forge, so it no longer exists.
+
+---
+
 LibrarianLib is a suite of libraries designed to help you express your creativity without having
 to sweat the details. You don’t need to keep track of all the events that go into registering a
 block, just hand it to LibLib, and we’ll take care of it for you.
