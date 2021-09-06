@@ -33,16 +33,16 @@ public class QuickstartSystem extends ParticleSystem {
         getUpdateModules().add(new BasicPhysicsUpdateModule(
                 position, previousPosition, velocity
         ));
-
-        getRenderModules().add(new SpriteRenderModule(
-                SpriteRenderModule.simpleRenderType(
-                        new ResourceLocation("modid", "textures/particle/sprite.png")
-                ),
-                position,
-                previousPosition,
-                color,
-                new ConstantBinding(0.25) // size
-        ));
+        getRenderModules().add(
+                SpriteRenderModule.build(
+                        new ResourceLocation("modid", "textures/particle/sprite.png"),
+                        position
+                )
+                        .previousPosition(previousPosition)
+                        .color(color)
+                        .size(0.25)
+                        .build()
+        );
     }
 
     public void spawn(
@@ -73,7 +73,9 @@ should only be one instance of a particle system, and it should be registered us
 
 Particles are created using the protected `addParticle` method. Subclasses should provide custom
 `spawn` methods that have meaningful parameters (`addParticle` just accepts a bunch of `double`s
-for reasons I'll go into in the next section).
+for reasons I'll go into in the next section). However, do refrain from using `Vector3d` parameters 
+if you'll be spawning a large number of particles, since that's exactly the kind of memory churn
+glitter tries to avoid.
 
 ## Bindings
 
@@ -117,7 +119,7 @@ directly accessing values from the particle array. Glitter has a number of built
 do more than directly index into the particles. 
 
 - `ConstantBinding`  
-  One of the more common bindings
+  One of the more common bindings, this just always reports the same value
 - `EaseBinding`  
   This will ease between two values based on the contents of other bindings
 - `PathBinding`  
@@ -163,9 +165,8 @@ number of render modules, meaning you can overlay multiple render effects on top
 (e.g. an opaque sprite with an additive halo sprite).
 
 You can either implement your own or use the built-in `SpriteRenderModule`. At its simplest, the
-`SpriteRenderModule` takes just a render type and position binding. The next two optional
-parameters—particle color and particle size—are the most commonly used ones, but it has several 
-other useful features.
+`SpriteRenderModule` takes just a render type and position binding. The other two most commonly 
+used parameters are the particle color and particle size, but it has several other useful features.
 
 ```java
 ~import com.teamwizardry.librarianlib.glitter.ParticleSystem;
@@ -181,15 +182,16 @@ public class SpriteRenderExampleSystem extends ParticleSystem {
         StoredBinding previousPosition = bind(3);
         StoredBinding color = bind(4);
 
-        getRenderModules().add(new SpriteRenderModule(
-                SpriteRenderModule.simpleRenderType(
-                        new ResourceLocation("modid", "textures/particle/sprite.png")
-                ),
-                position,
-                previousPosition,
-                color,
-                new ConstantBinding(0.25) // size
-        ));
+        getRenderModules().add(
+                SpriteRenderModule.build(
+                        new ResourceLocation("modid", "textures/particle/sprite.png"),
+                        position
+                )
+                        .previousPosition(previousPosition)
+                        .color(color)
+                        .size(0.25)
+                        .build()
+        );
     }
 }
 ```
@@ -200,25 +202,25 @@ public class SpriteRenderExampleSystem extends ParticleSystem {
 The easiest to understand would be the `alphaMultiplier`. This acts as an additional modifier on
 the color's alpha channel, allowing easier opacity manipulation.
 
+#### Sprite Sheet
+
+Often you'll have a large number of particle systems that are identical in every way except the
+texture. It can be tedious, repetitive, and downright inefficient to have separate systems for
+each texture, so the `SpriteRenderModule` has a setting to fix that: the `spriteSheet(size, index)`. 
+The sprite sheet size must be a power of two (2, 4, 8, ...), and the sprite sheet index is an index 
+in left to right, top to bottom order. This index can even be an `EaseBinding` to support 
+animations.
+
 #### Facing Vector
 One of the most interesting features of the sprite renderer is support for particles with sprites
 that don't directly face the player. By default, sprites are always rotated such that they face
-directly toward the camera, essentially appearing 2D. However, by passing a custom 3D binding for
+directly toward the camera, essentially appearing 2D. However, by specifying a custom 3D binding for
 the `facingVector`, particles can be made to face any direction you want. By a fortunate quirk of
 the math, the facing vector doesn't even need to be normalized.
 
 In this example I've set the facing vector to the velocity binding.
 
 ![sprite facing example](sprite_facing.png)
-
-#### Sprite Sheet
-
-Often you'll have a large number of particle systems that are identical in every way except the
-texture. It can be tedious, repetitive, and downright inefficient to have separate systems for
-each texture, so the `SpriteRenderModule` has two parameters to fix that: the `spriteSheetSize`
-and the `spriteSheetIndex` binding. The sprite sheet size must be a power of two (2, 4, 8, ...),
-and the sprite sheet index is an index in left to right, top to bottom order. This index can even
-be an `EaseBinding` to support animations.
 
 ## Depth Sorting & Other Modules
 
